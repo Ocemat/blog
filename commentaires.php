@@ -17,6 +17,8 @@
                                 WHERE id = $id");
     $billet -> execute();
     $bil = $billet -> fetch();
+
+    if (!empty($bil)) { 
     ?>
 
     <h1>Mon super Blog !</h1>
@@ -28,7 +30,7 @@
     </div>  </br>
 
     <form action="commentaires_post.php" method="post">
-    <input type="text" name="id_billet" id="id_billet" value= <?= $id ?> />
+    <input type="hidden" name="id_billet" id="id_billet" value= <?= $id ?> />
     <label for="pseudo"> Pseudo : </label> <input type="text" name="pseudo" id="pseudo" /> </br></br>
     <textarea name="contenu" id="contenu" rows= 8 cols= 55 placeholder="Votre commentaire"></textarea></br></br>
     <input type="submit" value="Envoyer" /></br>
@@ -59,6 +61,12 @@
     $commentaires->closeCursor(); // Termine le traitement de la requête 
     ?>
 
+<?php
+} else {
+    echo "Ce billet n'existe pas ! </br> </br>";
+    echo '<a href="index.php"> Retour à la liste des billets</a> </br>';
+}
+?>
       
 </body>
 </html>
