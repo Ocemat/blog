@@ -12,9 +12,9 @@
     //Connexion à la base de données
     include 'connexion.php';
     $id = $_GET['id'];
-    $billet = $bdd -> prepare("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y') AS date_c, DATE_FORMAT(date_creation, '%Hh%imin%ss') AS heure_c 
+    $billet = $bdd -> prepare("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date_c 
                                 FROM billets
-                                WHERE id = $id ");
+                                WHERE id = $id");
     $billet -> execute();
     $bil = $billet -> fetch();
     ?>
@@ -23,30 +23,40 @@
     <a href="index.php"> Retour à la liste des billets</a> </br>
 
     <div class= "news">
-        <h3>  <?= htmlspecialchars($bil['titre'])?> Rédigé le <?= htmlspecialchars($bil['date_c'])?> à <?= htmlspecialchars($bil['heure_c'])?></h3>
+        <h3>  <?= htmlspecialchars($bil['titre'])?> Rédigé le <?= htmlspecialchars($bil['date_c'])?></h3>
         <p>  <?= htmlspecialchars($bil['contenu']) ?> </br>   </p>
     </div>  </br>
+
+    <form action="commentaires_post.php" method="post">
+    <input type="text" name="id_billet" id="id_billet" value= <?= $id ?> />
+    <label for="pseudo"> Pseudo : </label> <input type="text" name="pseudo" id="pseudo" /> </br></br>
+    <textarea name="contenu" id="contenu" rows= 8 cols= 55 placeholder="Votre commentaire"></textarea></br></br>
+    <input type="submit" value="Envoyer" /></br>
+    </form>
+
     <h2> Commentaires :</h2>
 
     <?php
     $billet->closeCursor(); // Termine le traitement de la requête  
 
-    $commentaires = $bdd -> prepare("SELECT commentaire, auteur, DATE_FORMAT(date_commentaire, '%d/%m/%Y') AS date_c, DATE_FORMAT(date_commentaire, '%Hh%imin%ss') AS heure_c 
+    $commentaires = $bdd -> prepare("SELECT commentaire, auteur, DATE_FORMAT(date_commentaire, '%d/%m/%Y à %Hh%imin%ss') AS date_c
                                     FROM billets b
                                     JOIN commentaires c ON b.id = c.id_billet
                                     WHERE b.id = $id
+                                    ORDER BY date_commentaire DESC
                                     ");
     $commentaires -> execute();
 
     while($com = $commentaires -> fetch()) {
     ?>
         <div>
-            <p> <strong> <?= htmlspecialchars($com['auteur']) ?> </strong> le <?= htmlspecialchars($com['date_c'])?> à <?= htmlspecialchars($com['heure_c'])?> </br>   </p>
+            <p> <strong> <?= htmlspecialchars($com['auteur']) ?> </strong> le <?= htmlspecialchars($com['date_c'])?> </br>   </p>
             <?= $com['commentaire']?> 
         </div> 
 
     <?php
     }
+    $commentaires->closeCursor(); // Termine le traitement de la requête 
     ?>
 
       
