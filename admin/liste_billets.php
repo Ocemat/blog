@@ -38,6 +38,7 @@
         </tbody>
         <?php
         }
+        $req -> closeCursor(); // Termine le traitement de la requête 
         ?>
     </table>
 
