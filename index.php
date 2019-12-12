@@ -46,7 +46,7 @@
 
 
     // Récupération de la liste des billets
-    $billets = $bdd->prepare("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y') AS date_c, DATE_FORMAT(date_creation, '%Hh%imin%ss') AS heure_c FROM billets ORDER BY date_c DESC LIMIT :msg_par_page OFFSET :premiere_entree");
+    $billets = $bdd->prepare("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y') AS date_c, DATE_FORMAT(date_creation, '%Hh%imin%ss') AS heure_c FROM billets ORDER BY date_creation DESC LIMIT :msg_par_page OFFSET :premiere_entree");
     $billets->bindValue('msg_par_page', $msg_par_page, PDO::PARAM_INT);   // Cette valeur est de type entier
 
     $billets->bindValue('premiere_entree', $premiere_entree, PDO::PARAM_INT);
@@ -55,7 +55,7 @@
     while ($donnees = $billets->fetch()) {
         ?>
         <div class="news">
-            <h3> <?= htmlspecialchars($donnees['titre']) ?> Rédigé le <?= htmlspecialchars($donnees['date_c']) ?> à <?= htmlspecialchars($donnees['heure_c']) ?></h3>
+            <h3> <?= htmlspecialchars($donnees['titre']) ?> - Rédigé le <?= htmlspecialchars($donnees['date_c']) ?> à <?= htmlspecialchars($donnees['heure_c']) ?></h3>
             <p> <?= htmlspecialchars($donnees['contenu']) ?> </br>
                 <a href="commentaires.php?id=<?= $donnees['id'] ?>">Commentaires</a>
             </p>
