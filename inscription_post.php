@@ -3,24 +3,24 @@ session_start();
 include "connexion.php";
 
 
-// On récupère les infos du formulaire et rend inoffensives les balises HTML que le visiteur a pu entrer
+// On récupère les infos du formulaire
 $_SESSION['pseudo'] = $_POST['pseudo'];
 $pseudo = $_POST['pseudo'];
 echo $pseudo . ' : pseudo </br>';
 $passwd = ($_POST['password']);
-$passwd_verif = ($_POST['password_verif']);
-$email = ($_POST['email']);
+$passwd_verif = $_POST['password_verif'];
+$email = $_POST['email'];
 $_SESSION['email'] = $_POST['email'];
 
 // Hachage du mot de passe
 $pass_hache = password_hash($passwd, PASSWORD_DEFAULT);
 
-$errorMSG = "";
 
 try {
     // Vérification si pseudo dispo
-    $reponse = $bdd->prepare("SELECT pseudo FROM membres WHERE pseudo = '$pseudo' ");
-    $reponse->execute();
+    $reponse = $bdd->prepare("SELECT pseudo FROM membres WHERE pseudo = :pseudo ");
+    $reponse->execute(array(
+        'pseudo' => $pseudo));
     $dispo_pseudo = $reponse->fetch();
     //$dispo_pseudo->closeCursor();
 

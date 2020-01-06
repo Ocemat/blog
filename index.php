@@ -1,4 +1,7 @@
-<html lang="en">
+<?php 
+session_start();
+?>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -10,11 +13,17 @@
 
 <body>
     <div class="connexion"> 
-        <a href="inscription.php">Inscription</a> 
-        <a href="connexion_membre.php">Connexion</a> 
+        <?php if (empty($_SESSION['pseudo'])) { ?>
+            <a href="inscription.php">Inscription</a> 
+            <a href="connexion_membre.php">Connexion</a> 
+        <?php } else { ?>
+            <p> Bienvenue <?= $_SESSION['pseudo'] ?>  
+            <a href="deconnexion_membre.php">Déconnexion</a> </p>
+        <?php } ?>
     </div>
     <h1>Mon super Blog !</h1>
     <p>Derniers billets du blog :</p>
+  
 
     <?php
 
