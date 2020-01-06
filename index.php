@@ -9,7 +9,10 @@
 </head>
 
 <body>
-
+    <div class="connexion"> 
+        <a href="inscription.php">Inscription</a> 
+        <a href="connexion_membre.php">Connexion</a> 
+    </div>
     <h1>Mon super Blog !</h1>
     <p>Derniers billets du blog :</p>
 
@@ -53,7 +56,7 @@
     $billets->execute();
 
     while ($donnees = $billets->fetch()) {
-        ?>
+    ?>
         <div class="news">
             <h3> <?= htmlspecialchars($donnees['titre']) ?> - Rédigé le <?= htmlspecialchars($donnees['date_c']) ?> à <?= htmlspecialchars($donnees['heure_c']) ?></h3>
             <p> <?= htmlspecialchars($donnees['contenu']) ?> </br>
